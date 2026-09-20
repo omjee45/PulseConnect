@@ -3,23 +3,20 @@ const authService = require('../services/auth.service');
 const asyncHandler = require('../utils/asyncHandler');
 const ApiError = require('../utils/ApiError');
 
-/**
- * Cookie options for the JWT token.
- * In production (cross-origin Vercel → Railway): sameSite must be 'none' + secure must be true.
- * In development (same-origin localhost): sameSite 'strict' is fine.
- */
+
+// Cookie options for the JWT token
+const isProd = process.env.NODE_ENV === 'production' || (process.env.BACKEND_URL && process.env.BACKEND_URL.includes('onrender'));
+
 const getCookieOptions = () => ({
-  httpOnly: true,                                                         // not accessible via JS
-  secure: process.env.NODE_ENV === 'production',                         // HTTPS only in prod
-  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',  // cross-origin in prod
-  maxAge: 7 * 24 * 60 * 60 * 1000,                                      // 7 days in ms
+  httpOnly: true,                               
+  secure: isProd,                         
+  sameSite: isProd ? 'none' : 'strict',  
+  maxAge: 7 * 24 * 60 * 60 * 1000,                                      
 });
 
-// ─── POST /api/auth/register ───────────────────────────────────────────────
 const register = asyncHandler(async (req, res) => {
   const { fullName, email, password, role, DOB } = req.body;
 
-  // Check for existing account before hashing (fail fast)
   const existing = await User.findOne({ email });
   if (existing) {
     throw new ApiError(409, 'An account with this email already exists');
