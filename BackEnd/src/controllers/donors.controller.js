@@ -14,9 +14,7 @@ const getNearbyDonors = asyncHandler(async (req, res) => {
   const parsedLat = parseFloat(lat);
   const maxDistanceMeters = parseInt(distance) * 1000; // km → meters
 
-  // ── Diagnostic logging (temporary) ────────────────────────────────────────
-  // Confirms the exact values being used so unit-mismatch and coord issues
-  // are immediately visible in the server console.
+
   console.log('[getNearbyDonors] Request params:', {
     coordinates: [parsedLng, parsedLat],
     radiusKm: parseInt(distance),
@@ -25,10 +23,7 @@ const getNearbyDonors = asyncHandler(async (req, res) => {
     organ: organ || 'any',
     requesterId: req.user?.id || 'public',
   });
-  // ─────────────────────────────────────────────────────────────────────────
 
-  // Build filter.
-  // Both donors and recipients can appear if they are verified and willing to donate.
   const filter = {
     role: { $in: ['donor', 'recipient'] },
     isVerified: true,
@@ -72,12 +67,19 @@ const getNearbyDonors = asyncHandler(async (req, res) => {
   console.log('[getNearbyDonors] Executing filter:', JSON.stringify(filter, null, 2));
 
   const donors = await User.find(filter)
-    .select('fullName bloodGroup city state isOrganDonor organsDonating location isVerified phone')
+    .select('fullName bloodGroup city state isOrganDonor organsDonating location isVerified phone isPhonePublic')
     .limit(100);
 
   console.log(`[getNearbyDonors] Found ${donors.length} donors`);
 
-  res.json({ success: true, count: donors.length, donors });
+  // Strip phone from results where donor chose to keep it private
+  const safeDonors = donors.map(d => {
+    const obj = d.toObject();
+    if (!obj.isPhonePublic) delete obj.phone;
+    return obj;
+  });
+
+  res.json({ success: true, count: safeDonors.length, donors: safeDonors });
 });
 
 module.exports = { getNearbyDonors };

@@ -145,7 +145,7 @@ export default function DashboardPage() {
               <div className="text-center py-10 text-slate-400">
                 <Bell className="w-10 h-10 mx-auto mb-2 opacity-30" />
                 <p className="text-sm">No pending requests</p>
-                <Link to="/nearby-donors" className="text-xs text-primary-500 hover:underline mt-1 inline-block">
+                <Link to="/find-donors" className="text-xs text-primary-500 hover:underline mt-1 inline-block">
                   Find donors →
                 </Link>
               </div>
@@ -215,7 +215,7 @@ export default function DashboardPage() {
 
       {/* Quick actions */}
       <div className="grid sm:grid-cols-2 gap-4 mt-6">
-        <Link to="/nearby-donors">
+        <Link to="/find-donors">
           <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl p-5 text-white cursor-pointer hover:shadow-lg transition-shadow group">
             <MapPin className="w-8 h-8 mb-2 group-hover:scale-110 transition-transform" />
             <h3 className="font-semibold">Find Nearby Donors</h3>

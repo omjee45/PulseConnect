@@ -14,6 +14,7 @@ const updateProfileSchema = z.object({
 
   bloodGroup: z.enum(bloodGroups).optional(),
   isAvailableForBloodDonation: z.boolean().optional(),
+  isPhonePublic: z.boolean().optional(),
   lastDonationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), { message: 'Invalid date' }),
 
   isOrganDonor: z.boolean().optional(),

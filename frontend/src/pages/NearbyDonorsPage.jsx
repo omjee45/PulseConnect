@@ -1,14 +1,54 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { donorsApi } from '@/services/donors.api'
+import { connectionsApi } from '@/services/connections.api'
+import useAuthStore from '@/store/authStore'
 import { toast } from 'sonner'
-import { MapPin, Search, Filter, Loader2, Heart, Phone } from 'lucide-react'
+import { MapPin, Search, Loader2, Heart, Phone, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 
 const BLOOD_GROUPS = ['A+','A-','B+','B-','AB+','AB-','O+','O-']
 const ORGANS = ['Kidney','Liver','Heart','Lungs','Pancreas','Eyes']
+
+// Message button — sends a connection request then goes to /chat
+function MessageButton({ donorId }) {
+  const { user } = useAuthStore()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+
+  const handleMessage = async () => {
+    if (!user) {
+      toast.info('Please log in to send a message')
+      navigate('/login')
+      return
+    }
+    setLoading(true)
+    try {
+      await connectionsApi.sendRequest(donorId, 'Hi, I found you on PulseConnect and would like to connect.')
+      toast.success('Connection request sent!')
+      navigate('/chat')
+    } catch (err) {
+      const msg = err.response?.data?.message || ''
+      // Already connected or request pending — just go to chat
+      if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('exist')) {
+        navigate('/chat')
+      } else {
+        toast.error('Could not send message. Try again.')
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Button size="sm" className="flex-1 gap-1.5" onClick={handleMessage} disabled={loading}>
+      {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <MessageSquare className="w-3.5 h-3.5" />}
+      Message
+    </Button>
+  )
+}
 
 function DonorCard({ donor }) {
   return (
@@ -37,20 +77,21 @@ function DonorCard({ donor }) {
           </div>
         </div>
       </div>
-      <div className="mt-4 pt-4 border-t border-slate-100">
+      <div className="mt-4 pt-4 border-t border-slate-100 flex gap-2">
         {donor.phone ? (
-          <a href={`tel:${donor.phone}`} className="w-full block">
-            <Button size="sm" className="w-full gap-1.5">
+          <a href={`tel:${donor.phone}`} className="flex-1">
+            <Button size="sm" variant="outline" className="w-full gap-1.5">
               <Phone className="w-3.5 h-3.5" />
-              Contact
+              Call
             </Button>
           </a>
         ) : (
-          <Button size="sm" className="w-full gap-1.5" disabled variant="secondary">
+          <Button size="sm" variant="outline" className="flex-1 gap-1.5" disabled>
             <Phone className="w-3.5 h-3.5" />
-            No Phone Given
+            No Phone
           </Button>
         )}
+        <MessageButton donorId={donor._id} />
       </div>
     </div>
   )

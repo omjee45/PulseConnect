@@ -33,6 +33,7 @@ export default function MyProfilePage() {
   const [isOrganDonor, setIsOrganDonor] = useState(false)
   const [selectedOrgans, setSelectedOrgans] = useState([])
   const [isAvailable, setIsAvailable] = useState(true)
+  const [isPhonePublic, setIsPhonePublic] = useState(false)
   const [coords, setCoords] = useState(null)
   const [locating, setLocating] = useState(false)
 
@@ -49,6 +50,7 @@ export default function MyProfilePage() {
         setIsOrganDonor(p.isOrganDonor || false)
         setSelectedOrgans(p.organsDonating || [])
         setIsAvailable(p.isAvailableForBloodDonation ?? true)
+        setIsPhonePublic(p.isPhonePublic ?? false)
         
         if (p.location?.coordinates && p.location.coordinates.length === 2) {
           setCoords({
@@ -86,6 +88,7 @@ export default function MyProfilePage() {
         isOrganDonor,
         organsDonating: isOrganDonor ? selectedOrgans : [],
         isAvailableForBloodDonation: isAvailable,
+        isPhonePublic,
         ...(coords ? { location: { type: 'Point', coordinates: [coords.lng, coords.lat] } } : {})
       }
       const res = await profileApi.updateProfile(payload)
@@ -160,10 +163,23 @@ export default function MyProfilePage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <InputLabel htmlFor="phone">Phone</InputLabel>
+            <div className="sm:col-span-2">
+              <InputLabel htmlFor="phone">Phone Number</InputLabel>
               <Input id="phone" placeholder="+91 98765 43210" {...register('phone')} />
               <InputError message={errors.phone?.message} />
+              <label className="flex items-center gap-2 mt-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={isPhonePublic}
+                  onChange={e => setIsPhonePublic(e.target.checked)}
+                  className="w-4 h-4 rounded accent-primary-500"
+                />
+                <span className="text-xs text-slate-600">
+                  {isPhonePublic
+                    ? '📞 Phone visible to others — they can call you directly'
+                    : '🔒 Phone private — others can only message you'}
+                </span>
+              </label>
             </div>
             <div>
               <InputLabel htmlFor="age">Age</InputLabel>

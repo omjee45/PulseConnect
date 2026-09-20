@@ -35,7 +35,7 @@ export default function HomePage() {
   // (same as logged-out) — they'll be redirected after the check finishes.
   const primaryHref   = user ? '/dashboard'     : '/register'
   const primaryLabel  = user ? 'Go to Dashboard' : 'Join as Donor'
-  const secondaryHref = user ? '/nearby-donors' : '/register'
+  const secondaryHref = user ? '/find-donors' : '/register'
   const ctaHref       = user ? '/dashboard'     : '/register'
   const ctaLabel      = user ? 'Go to Dashboard' : 'Get Started for Free'
 

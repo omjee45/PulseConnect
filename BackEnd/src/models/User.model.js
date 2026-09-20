@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema(
       default: 'donor',
     },
     phone: { type: String, trim: true },
+    isPhonePublic: { type: Boolean, default: false }, // donor controls if phone is visible
     DOB: { type: Date },
     age: { type: Number, min: [18, 'Must be at least 18 years old'] },
     weight: { type: Number },
@@ -49,9 +50,6 @@ const userSchema = new mongoose.Schema(
     city: { type: String },
     pincode: { type: String },
 
-    // GeoJSON Point — used for $near nearby-donor queries.
-    // No defaults — documents without a location simply won't have this field
-    // and will be naturally excluded from $near queries.
     location: {
       type: {
         type: String,
@@ -68,9 +66,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Required for geospatial $near/$geoWithin queries.
-// sparse:true means documents without a location field are excluded from the index
-// (otherwise Mongoose errors on documents with no location field).
 userSchema.index({ location: '2dsphere' }, { sparse: true });
 
 module.exports = mongoose.model('User', userSchema);
