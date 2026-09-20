@@ -87,7 +87,6 @@ const io = new Server(httpServer, {
   },
 });
 
-// Register socket auth middleware + all event handlers
 initSockets(io);
 
 module.exports = { app, httpServer, io };

@@ -25,14 +25,10 @@ const features = [
 ]
 
 export default function HomePage() {
-  // BUG FIX: Read auth state so CTAs route correctly for logged-in users.
-  // isLoading is true while App.jsx's GET /api/auth/me is in-flight.
-  // We read it here to avoid a race condition where user is briefly null
-  // even though the session is valid — in that case we show neutral labels.
+ 
   const { user, isLoading } = useAuthStore()
 
-  // While the /me check is still resolving, show neutral destinations
-  // (same as logged-out) — they'll be redirected after the check finishes.
+  
   const primaryHref   = user ? '/dashboard'     : '/register'
   const primaryLabel  = user ? 'Go to Dashboard' : 'Join as Donor'
   const secondaryHref = user ? '/find-donors' : '/register'
@@ -61,13 +57,11 @@ export default function HomePage() {
             Fast, verified, and private.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {/* BUG FIX: was hardcoded to /register even when user is logged in */}
             <Link to={primaryHref}>
               <Button size="lg" className="w-full sm:w-auto gap-2" disabled={isLoading}>
                 {primaryLabel} <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            {/* BUG FIX: was mislabeled "Find a Donor" but went to /register for everyone */}
             <Link to={secondaryHref}>
               <Button
                 variant="outline"

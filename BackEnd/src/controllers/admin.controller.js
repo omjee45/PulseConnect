@@ -30,9 +30,7 @@ const verifyUser = asyncHandler(async (req, res) => {
   res.json({ success: true, message: 'User verified successfully', user });
 });
 
-// ─── PUT /api/admin/users/:id/reject ───────────────────────────────────────
-// We handle rejection by deleting the account entirely, allowing them to re-register
-// if they made a mistake.
+
 const rejectUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndDelete(req.params.id);
 

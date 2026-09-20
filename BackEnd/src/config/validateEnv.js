@@ -1,9 +1,3 @@
-/**
- * Validates required environment variables at startup.
- * Throws a descriptive error and exits if any are missing.
- * The server will NEVER start silently broken.
- */
-
 const REQUIRED_ENV_VARS = [
   'NODE_ENV',
   'PORT',

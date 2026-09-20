@@ -4,17 +4,7 @@ const Conversation = require('../models/Conversation.model');
 const Message = require('../models/Message.model');
 const ApiError = require('../utils/ApiError');
 
-/**
- * Service to handle accepting a connection request.
- * This is the critical ATOMIC flow that fixes the old "fragmented connection" bug.
- * 
- * 1. Mark request as 'accepted'
- * 2. Create a new Conversation
- * 3. Add the introMessage as the first Message (if it exists)
- * 4. Return the populated conversation
- * 
- * All done in a single database transaction so we never end up with half-created states.
- */
+
 async function acceptConnectionRequest(requestId, receiverId) {
   const session = await mongoose.startSession();
   session.startTransaction();

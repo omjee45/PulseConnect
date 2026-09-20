@@ -1,5 +1,3 @@
-// A basic service worker to enable PWA installability.
-// It uses a simple network-first cache strategy for basic offline support.
 
 const CACHE_NAME = 'pulseconnect-cache-v1';
 

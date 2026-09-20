@@ -2,15 +2,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import useAuthStore from '@/store/authStore'
 import { Heart } from 'lucide-react'
 
-/**
- * ProtectedRoute — single wrapper for all auth-gated routes.
- *
- * Behaviour:
- *  - While verifying session (isLoading=true): shows a centered spinner
- *  - If no user:  redirects to /login, preserving the intended destination
- *  - If role provided and doesn't match: redirects to /dashboard
- *  - Otherwise: renders children
- */
+
 export default function ProtectedRoute({ children, role }) {
   const { user, isLoading } = useAuthStore()
   const location = useLocation()

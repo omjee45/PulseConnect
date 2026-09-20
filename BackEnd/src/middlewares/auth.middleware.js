@@ -1,13 +1,7 @@
 const jwt = require('jsonwebtoken');
 const ApiError = require('../utils/ApiError');
 
-/**
- * JWT auth middleware — reads token from HTTP-only cookie.
- *
- * BUG FIX from old code:
- *   Old: catch block only logged the error, never sent a response → request hung forever.
- *   New: ALWAYS calls next(ApiError) on any failure → errorHandler sends a 401 response.
- */
+
 function authMiddleware(req, res, next) {
   try {
     const token = req.cookies?.token;

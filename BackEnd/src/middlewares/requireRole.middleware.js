@@ -1,9 +1,5 @@
 const ApiError = require('../utils/ApiError');
 
-/**
- * Role-based access guard.
- * Usage: router.delete('/admin/user/:id', authMiddleware, requireRole('admin'), controller)
- */
 function requireRole(...roles) {
   return (req, res, next) => {
     if (!req.user) {

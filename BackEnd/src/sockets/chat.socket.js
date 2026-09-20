@@ -2,16 +2,13 @@ const Message = require('../models/Message.model');
 const Conversation = require('../models/Conversation.model');
 const { addUser, removeUser, getSocketId, getOnlineUserIds } = require('../services/socket.service');
 
-// Handle chat socket events
 function registerChatHandlers(io, socket) {
   const userId = socket.userId;
 
-  // Register user as online, broadcast updated online list
   addUser(userId, socket.id);
   io.emit('onlineUsers', getOnlineUserIds());
   console.log(`✅ Socket connected: userId=${userId} socketId=${socket.id}`);
 
-  // ─── sendMessage ───────────────────────────────────────────────────────
   socket.on('sendMessage', async ({ conversationId, text, receiverId }) => {
     try {
       if (!conversationId || !text?.trim() || !receiverId) {

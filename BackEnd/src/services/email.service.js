@@ -3,11 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Send one-click admin approval email
-// Wrapped in try/catch to prevent crashing the caller
 const sendAdminApprovalEmail = async (donor) => {
   try {
-    // Validate required env vars
     if (!process.env.RESEND_API_KEY || !process.env.ADMIN_ACTION_SECRET || !process.env.ADMIN_NOTIFICATION_EMAIL) {
       console.warn('⚠️ Missing email env variables (RESEND_API_KEY, ADMIN_ACTION_SECRET, ADMIN_NOTIFICATION_EMAIL). Email skipped.');
       return;
@@ -16,7 +13,6 @@ const sendAdminApprovalEmail = async (donor) => {
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:8800';
     const emailFrom = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
-    // Generate tokens valid for 48 hours
     const approveToken = jwt.sign(
       { donorId: donor._id, action: 'approve' },
       process.env.ADMIN_ACTION_SECRET,

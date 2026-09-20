@@ -1,11 +1,7 @@
 const ApiError = require('../utils/ApiError');
 
-/**
- * Global error handler — must be the LAST middleware registered in app.js.
- * Returns a consistent JSON shape for every error type.
- */
+
 function errorHandler(err, req, res, next) {
-  // Operational errors (thrown via new ApiError(...))
   if (err instanceof ApiError) {
     return res.status(err.statusCode).json({
       success: false,

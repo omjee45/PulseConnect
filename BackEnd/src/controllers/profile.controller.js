@@ -7,9 +7,7 @@ const { sendAdminApprovalEmail } = require('../services/email.service');
 const getProfile = asyncHandler(async (req, res) => {
   const { id } = req.params;
   
-  // TODO: Add privacy rules — e.g. only return full profile if they are connected,
-  // or return a sanitized version for public viewing.
-  // For now, return basic public info (exclude password/sensitive fields).
+
   const profile = await User.findById(id).select('-password');
   
   if (!profile) {

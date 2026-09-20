@@ -1,10 +1,3 @@
-/**
- * Shared in-memory store for tracking online users.
- * Maps userId (string) → socketId (string).
- *
- * This module is a singleton — imported by both sockets/ and any
- * controller that needs to push real-time events to specific users.
- */
 const onlineUsers = new Map();
 
 function addUser(userId, socketId) {

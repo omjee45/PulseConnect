@@ -1,13 +1,7 @@
 const { ZodError } = require('zod');
 const ApiError = require('../utils/ApiError');
 
-/**
- * Zod schema validation middleware factory.
- * Usage: router.post('/register', validate(registerSchema), controller)
- *
- * Validates req.body against the provided Zod schema.
- * On failure, formats Zod errors into a readable array and passes ApiError(400) to errorHandler.
- */
+
 function validate(schema) {
   return (req, res, next) => {
     try {
