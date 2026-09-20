@@ -1,0 +1,16 @@
+{
+  "name": "PulseConnect",
+  "short_name": "PulseConnect",
+  "description": "Emergency blood and organ donation platform.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#ef4444",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

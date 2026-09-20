@@ -1,0 +1,117 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+}
+
+
+
+
+.admin-container {
+    padding: 40px;
+    text-align: center;
+}
+
+
+
+
+.admin-title {
+    font-size: 42px;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.admin-subtitle {
+    color: #cfd9df;
+    margin-bottom: 40px;
+}
+
+
+
+
+.donor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+
+
+
+.donor-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 25px;
+    color: white;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.donor-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+
+
+
+.blood-badge {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #ff4b5c;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+.btn-group {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.verify-btn {
+    background: linear-gradient(45deg, #00c853, #69f0ae);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.verify-btn:hover {
+    transform: scale(1.1);
+}
+
+.reject-btn {
+    background: linear-gradient(45deg, #ff1744, #ff8a80);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.reject-btn:hover {
+    transform: scale(1.1);
+}
